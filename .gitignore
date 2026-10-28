@@ -1,0 +1,7 @@
+.baked/
+*.db
+.dart_tool/
+build/
+*.exe
+*.aot
+*.snapshot
