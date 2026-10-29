@@ -127,7 +127,7 @@ void main() {
     ], Inputs(stdin: () async => [], file: (_) => null));
     expect(
       '${missingCode.code}|${missingCode.out}|${missingCode.err}',
-      equals('2||latcell: usage: latcell near CODE\n'),
+      equals('2||latcell: usage: latcell near CODE [--only DIRS]\n'),
     );
 
     final extraCode = await runCli([
@@ -137,7 +137,7 @@ void main() {
     ], Inputs(stdin: () async => [], file: (_) => null));
     expect(
       '${extraCode.code}|${extraCode.out}|${extraCode.err}',
-      equals('2||latcell: usage: latcell near CODE\n'),
+      equals('2||latcell: usage: latcell near CODE [--only DIRS]\n'),
     );
 
     final unsupportedOption = await runCli([
