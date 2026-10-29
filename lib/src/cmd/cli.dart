@@ -15,7 +15,7 @@ const String usageText =
     '  encode SYSTEM LAT LON [--length N]\n'
     '  decode CODE [--system SYSTEM]\n'
     '  convert CODE --to SYSTEM [--length N] [--system SYSTEM]\n'
-    '  near CODE\n'
+    '  near CODE [--only DIRS]\n'
     '  cover --box S,W,N,E --length N [--limit M]\n'
     '  trail FILE [--system SYSTEM] [--length N]\n'
     'systems: geohash, maidenhead, olc, georef\n';

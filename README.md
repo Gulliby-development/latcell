@@ -41,7 +41,7 @@ printf '# morning walk\n37.7749,-122.4194\n37.77491,-122.41941\n\n37.7790, -122.
       encode SYSTEM LAT LON [--length N]
       decode CODE [--system SYSTEM]
       convert CODE --to SYSTEM [--length N] [--system SYSTEM]
-      near CODE
+      near CODE [--only DIRS]
       cover --box S,W,N,E --length N [--limit M]
       trail FILE [--system SYSTEM] [--length N]
     systems: geohash, maidenhead, olc, georef
@@ -53,11 +53,13 @@ Options can be written as <code>--name value</code> or <code>--name=value</code>
 | <code>encode SYSTEM LAT LON [--length N]</code> | Encode coordinates in the named system. Length defaults to that system's default. |
 | <code>decode CODE [--system SYSTEM]</code> | Detect or explicitly select the code system, then print the canonical code, cell bounds, and center. |
 | <code>convert CODE --to SYSTEM [--length N] [--system SYSTEM]</code> | Decode the source code and encode the center of its cell in the target system. <code>--to</code> is required; target length defaults to the target system's default. |
-| <code>near CODE</code> | Print the eight neighbouring cells for a geohash. |
+| <code>near CODE [--only DIRS]</code> | Print the eight neighbouring cells for a geohash, or only the ones named by <code>--only</code>. |
 | <code>cover --box S,W,N,E --length N [--limit M]</code> | Print all geohash cells containing the box's south-west and north-east corners and the cells between them. <code>--box</code> and <code>--length</code> are required; the limit defaults to 100. |
 | <code>trail FILE [--system SYSTEM] [--length N]</code> | Read coordinate pairs from a UTF-8 trail file, or from standard input when FILE is <code>-</code>. The system defaults to geohash and length defaults to the selected system's default. |
 
 A whole-number option must contain one to six ASCII digits. The box is written as <code>S,W,N,E</code>; its four values allow spaces and tabs around them. A south coordinate above north is invalid. West greater than east denotes a box crossing the antimeridian.
+
+The <code>--only</code> value of <code>near</code> is a comma-separated list of the directions <code>N</code>, <code>NE</code>, <code>E</code>, <code>SE</code>, <code>S</code>, <code>SW</code>, <code>W</code> and <code>NW</code>, written in upper case without spaces. The chosen neighbours are printed in the usual order whatever the order of the list, and a pole shows <code>-</code> as before. An empty list, an unknown name or a name given twice is a usage error (exit status 2).
 
 ## Systems, precision, and detection
 
@@ -134,6 +136,9 @@ S bpbn
 SW zzzy
 W zzzz
 NW -
+$ latcell near bpbp --only W,E
+E bpbr
+W zzzz
 $ latcell cover --box 37.77,-122.43,37.78,-122.41 --length 6
 9q8yyj
 9q8yym
