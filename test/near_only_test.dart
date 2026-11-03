@@ -78,7 +78,7 @@ void main() {
     (
       'the usage error names the option',
       ['near', '--only', 'N'],
-      '2||latcell: usage: latcell near CODE [--only DIRS]\n',
+      '2||latcell: usage: latcell near CODE [--only DIRS | --except DIRS]\n',
     ),
     (
       'a bad direction is reported before a bad code',

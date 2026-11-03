@@ -13,36 +13,42 @@ const List<String> _directions = <String>[
   'NW',
 ];
 
-Set<String>? _onlyOption(Parsed parsed) {
-  final value = parsed.options['only'];
+Set<String>? _directionsOption(Parsed parsed, String name) {
+  final value = parsed.options[name];
   if (value == null) {
     return null;
   }
 
   final chosen = <String>{};
-  for (final name in value.split(',')) {
-    if (!_directions.contains(name)) {
+  for (final direction in value.split(',')) {
+    if (!_directions.contains(direction)) {
       throw Failure(
         2,
-        'option --only needs directions from ${_directions.join(',')}, '
+        'option --$name needs directions from ${_directions.join(',')}, '
         'got $value',
       );
     }
-    if (!chosen.add(name)) {
-      throw Failure(2, 'option --only lists $name twice');
+    if (!chosen.add(direction)) {
+      throw Failure(2, 'option --$name lists $direction twice');
     }
   }
   return chosen;
 }
 
 String nearCommand(List<String> args) {
-  final parsed = parseOptions(args, const <String>['only']);
-  parsed.expect(1, 'near CODE [--only DIRS]');
-  final only = _onlyOption(parsed);
+  final parsed = parseOptions(args, const <String>['only', 'except']);
+  parsed.expect(1, 'near CODE [--only DIRS | --except DIRS]');
+  if (parsed.options.containsKey('only') &&
+      parsed.options.containsKey('except')) {
+    throw Failure(2, 'options --only and --except cannot be combined');
+  }
+  final only = _directionsOption(parsed, 'only');
+  final except = _directionsOption(parsed, 'except');
 
   final output = StringBuffer();
   for (final (name, code) in geohashNeighbors(parsed.positionals[0])) {
-    if (only == null || only.contains(name)) {
+    if ((only == null || only.contains(name)) &&
+        (except == null || !except.contains(name))) {
       output.write('$name $code\n');
     }
   }
